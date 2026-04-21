@@ -11,6 +11,10 @@ const makeForm = (() => {
       "Напиток №" + nextId;
     addDeleteButton(clone);
 
+    clone.querySelectorAll('input[name="milk"]').forEach((input) => {
+      input.name = "milk-" + nextId;
+    });
+
     document
       .getElementById("add-button")
       .insertAdjacentElement("beforebegin", clone);
@@ -46,23 +50,35 @@ function updateNumbers() {
   });
 }
 
+const forWrap = [
+  "срочно",
+  "побыстрее",
+  "быстрее",
+  "скорее",
+  "поскорее",
+  "очень нужно",
+];
+
 function getOrderData() {
   const beverages = document.querySelectorAll(".beverage");
 
   return Array.from(beverages).map((item) => {
     const drink = item.querySelector("select").value;
 
-    const milkElement = item.querySelector("input[name='milk']:checked");
-    const milk = milkElement ? milkElement.value : null;
+    const milkElement = item.querySelector("input.milk-choice:checked");
+    const milk = milkElement ? milkElement.value : "-";
 
     const options = Array.from(
       item.querySelectorAll("input[name='options']:checked"),
     ).map((el) => el.value);
 
+    const wishes = item.querySelector(".wishes").value;
+
     return {
       drink,
       milk,
       options,
+      wishes,
     };
   });
 }
@@ -95,6 +111,7 @@ function createTable(data) {
           <td>${translateDrink(item.drink)}</td>
           <td>${translateMilk(item.milk)}</td>
           <td>${optionsText}</td>
+          <td>${wrapWords(item.wishes, forWrap)}</td>
         </tr>
       `;
     })
@@ -107,6 +124,7 @@ function createTable(data) {
           <th>Напиток</th>
           <th>Молоко</th>
           <th>Дополнительно</th>
+          <th>Пожелания</th>
         </tr>
       </thead>
       <tbody>
@@ -162,14 +180,6 @@ for (const wishArea of document.getElementsByClassName("wishes")) {
   wishArea.addEventListener("input", (e) => {
     const element = e.target;
     var text = element.value;
-    const forWrap = [
-      "срочно",
-      "побыстрее",
-      "быстрее",
-      "скорее",
-      "поскорее",
-      "очень нужно",
-    ];
 
     const next = element.nextSibling;
     if (next && next.nodeType === Node.TEXT_NODE) {
@@ -207,7 +217,7 @@ document.getElementById("order-submission").addEventListener("submit", (e) => {
   const inputTime = new Date();
   inputTime.setHours(hours, minutes, 0, 0);
 
-  if (inputTime > now) {
+  if (inputTime < now) {
     document.getElementById("order-time-input").style.borderColor = "red";
     alert(
       "Мы не умеем перемещаться во времени. Выберите время позже, чем текущее",
