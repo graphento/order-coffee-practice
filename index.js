@@ -51,3 +51,36 @@ document.getElementById("submit-button").addEventListener("click", (e) => {
 });
 
 makeForm();
+
+for (const wishArea of document.getElementsByClassName("wishes")) {
+  wishArea.addEventListener("input", (e) => {
+    const element = e.target;
+    var text = element.value;
+    const forWrap = [
+      "срочно",
+      "побыстрее",
+      "быстрее",
+      "скорее",
+      "поскорее",
+      "очень нужно",
+    ];
+
+    const next = element.nextSibling;
+    if (next && next.nodeType === Node.TEXT_NODE) {
+      next.remove();
+    }
+    element.parentNode.lastElementChild.innerHTML = wrapWords(text, forWrap);
+  });
+}
+
+function wrapWords(text, wordsList) {
+  const sortedWords = [...wordsList].sort((a, b) => b.length - a.length);
+
+  const pattern = sortedWords
+    .map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    .join("|");
+
+  const regex = new RegExp(pattern, "gi");
+
+  return text.replace(regex, "<b>$&</b>");
+}
