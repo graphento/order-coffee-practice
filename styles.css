@@ -85,3 +85,15 @@
   right: 10px;
   cursor: pointer;
 }
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.order-table th,
+.order-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+}
