@@ -4,16 +4,16 @@ const makeForm = (() => {
 
   var nextId = 1;
 
-    return function () {
+  return function () {
     const clone = beverageTemplate.cloneNode(true);
 
     clone.getElementsByClassName("beverage-count")[0].textContent =
-        "Напиток №" + nextId;
+      "Напиток №" + nextId;
     addDeleteButton(clone);
 
     document
-        .getElementById("add-button")
-        .insertAdjacentElement("beforebegin", clone);
+      .getElementById("add-button")
+      .insertAdjacentElement("beforebegin", clone);
 
     nextId++;
   };
@@ -42,8 +42,7 @@ function updateNumbers() {
   const items = document.querySelectorAll(".beverage");
 
   items.forEach((el, index) => {
-    el.querySelector(".beverage-count").textContent =
-      "Напиток №" + (index + 1);
+    el.querySelector(".beverage-count").textContent = "Напиток №" + (index + 1);
   });
 }
 
@@ -56,7 +55,7 @@ function getOrderData() {
     const milk = item.querySelector("input[name='milk']:checked").value;
 
     const options = Array.from(
-      item.querySelectorAll("input[name='options']:checked")
+      item.querySelectorAll("input[name='options']:checked"),
     ).map((el) => el.value);
 
     return {
@@ -190,3 +189,29 @@ function wrapWords(text, wordsList) {
 
   return text.replace(regex, "<b>$&</b>");
 }
+
+const orderSubmissionResult = document.getElementById(
+  "order-submission-result",
+);
+
+document.getElementById("order-submission").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const formData = new FormData(event.target);
+
+  const orderTime = formData.get("order-time");
+
+  const now = new Date();
+  const [hours, minutes] = orderTime.split(":").map(Number);
+
+  const inputTime = new Date();
+  inputTime.setHours(hours, minutes, 0, 0);
+
+  if (inputTime > now) {
+    document.getElementById("order-time-input").style.borderColor = "red";
+    alert(
+      "Мы не умеем перемещаться во времени. Выберите время позже, чем текущее",
+    );
+  } else {
+    lightboxToggle.checked = false;
+  }
+});
