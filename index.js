@@ -21,4 +21,11 @@ document
   .getElementById("add-button")
   .addEventListener("click", (e) => makeForm());
 
+const lightboxToggle = document.getElementById("lightbox-toggle");
+
+document.getElementById("submit-button").addEventListener("click", (e) => {
+  e.preventDefault();
+  lightboxToggle.checked = true;
+});
+
 makeForm();
