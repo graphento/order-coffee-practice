@@ -78,13 +78,21 @@
     <input type="checkbox" id="lightbox-toggle" class="hidden" />
     <div class="lightbox-overlay">
       <div class="lightbox">
-        <div id="lightbox-message"> Заказ принят! </div>
+        <div id="lightbox-message">Заказ принят!</div>
         <label for="lightbox-toggle" class="lightbox-close">X</label>
-        <br>
+        <br />
         <form id="order-submission">
           <label>
             Выберите время заказа
-            <input type="time" name="order-time" id="order-time-input" />
+            <input
+              type="time"
+              name="order-time"
+              id="order-time-input"
+            /> </label
+          ><br />
+          <label
+            >Пожелания<br />
+            <textarea></textarea>
           </label>
           <span id="order-submission-result"></span>
           <input type="submit" value="Оформить" />

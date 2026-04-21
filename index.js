@@ -52,7 +52,8 @@ function getOrderData() {
   return Array.from(beverages).map((item) => {
     const drink = item.querySelector("select").value;
 
-    const milk = item.querySelector("input[name='milk']:checked").value;
+    const milkElement = item.querySelector("input[name='milk']:checked");
+    const milk = milkElement ? milkElement.value : null;
 
     const options = Array.from(
       item.querySelectorAll("input[name='options']:checked"),
